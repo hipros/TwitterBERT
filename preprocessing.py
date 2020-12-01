@@ -25,6 +25,10 @@ class Preprocessing(object):
 
     def remove_duplicate(self):
         for rv in self.raw_value:
+
+            if rv[0] == '':
+                continue
+
             try:
                 self.dataSet.add(rv[0])
             except Exception as e:
