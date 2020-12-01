@@ -78,7 +78,9 @@ if __name__ == '__main__':
                         help='TXT file path to save')
     parser.add_argument('--remove_past_txt', default=False, type=bool,
                         help='If True, remove past txt data and save new txt')
-    parser.add_argument('--print_data', type=bool, default=False, help='If True, print refined dataset')
+    parser.add_argument('--print_data', default=False, type=bool,
+                        help='If True, print refined dataset')
+
     args = parser.parse_args()
 
     pp = Preprocessing(args)
