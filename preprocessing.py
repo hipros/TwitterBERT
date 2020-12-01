@@ -69,10 +69,14 @@ class Preprocessing(object):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Twitter Data Preprocessing")
-    parser.add_argument('--abnormal_normal', type=int, help='Data type select(0: abnormal, 1: normal)')
-    parser.add_argument('--load_csv_path', type=str, default='data/use_abnormal.csv', help='CSV file path to load')
-    parser.add_argument('--save_txt_path', type=str, default='total.txt', help='TXT file path to save')
-    parser.add_argument('--remove_past_txt', type=bool, default=False,
+
+    parser.add_argument('--is_abnormal', default=False, type=bool,
+                        help='If True, Data type is abnormal data')
+    parser.add_argument('--load_csv_path', default='data/anor.csv', type=str,
+                        help='CSV file path to load')
+    parser.add_argument('--save_txt_path', default='total.txt', type=str,
+                        help='TXT file path to save')
+    parser.add_argument('--remove_past_txt', default=False, type=bool,
                         help='If True, remove past txt data and save new txt')
     parser.add_argument('--print_data', type=bool, default=False, help='If True, print refined dataset')
     args = parser.parse_args()
