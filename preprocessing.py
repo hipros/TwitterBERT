@@ -15,7 +15,7 @@ class Preprocessing(object):
         data_read_encoding = 'UTF-8'
 
         self.train = pd.read_csv(self.data_path, encoding=data_read_encoding)
-        self.raw_value = [str(rv).split(',') for rv in self.train.values[:, 0]] # data column 추출
+        self.raw_value = [str(rv).split(',') for rv in self.train.iloc[:]['text']]  # data column 추출
 
         self.dataSet = set()
         self.dataSet_refined = set()
