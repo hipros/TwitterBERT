@@ -1,0 +1,3 @@
+[submodule "hangul_utils"]
+	path = hangul_utils
+	url = https://github.com/kaniblu/hangul-utils
