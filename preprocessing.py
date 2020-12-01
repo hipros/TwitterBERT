@@ -10,7 +10,7 @@ class Preprocessing(object):
     def __init__(self, config):
         self.data_path = config.load_csv_path
         self.save_path = config.save_txt_path
-        self.data_type = config.abnormal_normal
+        self.normal_abnormal_flag = '0' if config.is_abnormal else '1'
         self.print_refined_data = config.print_data
         data_read_encoding = 'UTF-8'
 
@@ -40,7 +40,7 @@ class Preprocessing(object):
             for i, dt in enumerate(self.dataSet_refined):
                 f.write(str(i) + '\t')
                 f.write(dt + '\t')
-                f.write('0 \n')
+                f.write(self.normal_abnormal_flag + ' \n')
 
     def run(self):
         filer = Filter()
