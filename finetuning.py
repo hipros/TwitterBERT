@@ -50,7 +50,8 @@ class Solver(object):
         self.max_acc = 0
 
     def load_model(self):
-        self.model, self.vocab = get_pytorch_kobert_model()
+        self.bert_model, self.vocab = get_pytorch_kobert_model(ctx=self.device)
+        self.model = BERTClassifier(self.bert_model, dr_rate=self.dropout_rt).to(self.device)
         self.tokenizer = get_tokenizer()
         self.token = gluonnlp.data.BERTSPTokenizer(self.tokenizer, self.vocab, lower=False)
 
@@ -78,7 +79,6 @@ class Solver(object):
         num_total_train = len(self.train_loader) * self.num_epochs
         warmup_step = int(num_total_train * self.warmup_ratio)
 
-        ## AdamW ??
         self.optimizer = AdamW(optimizer_grouped_parameters, lr=self.learning_rate)
         self.criterion = torch.nn.CrossEntropyLoss()
         self.scheduler = get_cosine_schedule_with_warmup(self.optimizer, num_warmup_steps=warmup_step,
