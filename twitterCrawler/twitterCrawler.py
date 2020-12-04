@@ -1,5 +1,7 @@
 import GetOldTweets3 as got
+import pandas as pd
 import argparse
+
 
 def main_hash_split(content):
     content_split = content.text.split('#')
@@ -20,10 +22,19 @@ class TwitterCrawler:
         self.content_text_set = set()
         self.tweet = got.manager.TweetManager.getTweets(tweet_criteria)
         self.print_content = config.print_content
+        self.save_tsv_path = config.save_path
 
     def print_content_txt(self):
         for dt in self.content_text_set:
             print(dt)
+
+    def save_content(self):
+        twitter_df = pd.DataFrame(list(self.content_text_set),
+                                  columns=['date', 'time', 'user_name', 'text', 'link', 'retweet_counts',
+                                           'favorite_counts', 'user_created', 'user_tweets', 'user_followings',
+                                           'user_followers'])
+
+        twitter_df.to_csv(self.save_tsv_path, index=True, sep='\t')
 
     def run(self):
         for tw in self.tweet:
@@ -46,6 +57,7 @@ if __name__ == '__main__':
     parser.add_argument('--query_for_search', type=str, default="#조건 OR #ㅈㄱ", help='hash tag for search(#content1 OR #content2 OR ...)')
     parser.add_argument('--print_content', type=bool, default=False, help='If True, print contents')
     parser.add_argument('--max_tweets_num', type=int, default=10000, help='Maximum number of tweets for crawling')
+    parser.add_argument('--save_path', type=str, default="sample.tsv", help='save file path')
     args = parser.parse_args()
 
     twc = TwitterCrawler(args)
