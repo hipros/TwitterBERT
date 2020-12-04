@@ -53,13 +53,13 @@ if __name__ == '__main__':
     parser.add_argument('--cuda', default="cuda" if torch.cuda.is_available() else "cpu", type=str,
                         help="Cuda available")
 
-    parser.add_argument('--train_batch_size', default=32, type=int, help="Train batch size")
-    parser.add_argument('--valid_batch_size', default=1, type=int, help="Validation batch size")
+    parser.add_argument('--train_batch_size', default=64, type=int, help="Train batch size")
+    parser.add_argument('--valid_batch_size', default=64, type=int, help="Validation batch size")
 
-    parser.add_argument('--train_txt_path', default="data/ratings_train.txt?dl=1", type=str,
-                        help="Train dataset for finetuning")
+    parser.add_argument('--train_txt_path', default="total.txt?dl=1", type=str,
+                        help="Train dataset for fine tuning")
     parser.add_argument('--valid_txt_path', default="data/ratings_test.txt?dl=1", type=str,
-                        help="Validation dataset for finetuning")
+                        help="Validation dataset for fine tuning")
 
     parser.add_argument('--max_len', default=64, type=int,
                         help="Max length of one input sequence")
