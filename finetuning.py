@@ -101,14 +101,13 @@ class Solver(object):
             self.optimizer.step()
             self.scheduler.step()  # Update learning rate schedule
             train_acc += calc_accuracy(out, label)
-            if batch_id % self.log_interval == 0:
-                print("epoch {} batch id {} loss {} train acc {}".format(
-                    epoch + 1, batch_id + 1, loss.data.cpu().numpy(), train_acc / (batch_id+1)))
+
         print("epoch {} train acc {}".format(epoch + 1, train_acc / (batch_id + 1)))
 
     def valid_model(self, epoch):
         test_acc = 0.0
         self.model.eval()
+
         for batch_id, (token_ids, valid_length, segment_ids, label) in enumerate(tqdm(self.valid_loader)):
             token_ids = token_ids.long().to(self.device)
             segment_ids = segment_ids.long().to(self.device)
@@ -121,7 +120,7 @@ class Solver(object):
             self.max_acc = test_acc
             self.save_model()
 
-        print("epoch {} test acc {}".format(epoch + 1, test_acc / (batch_id + 1)))
+        print("epoch {} valid acc {}".format(epoch + 1, test_acc / (batch_id + 1)))
 
     def run(self):
         self.load_model()
