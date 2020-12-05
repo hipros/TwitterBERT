@@ -13,7 +13,7 @@ class Converter(object):
         self.device = device
 
     def transform_type(self, val, to_cuda):
-        val = torch.tensor(val)
+        val = torch.tensor(val).long()
 
         if to_cuda is True:
             val = val.to(self.device)
@@ -53,7 +53,6 @@ class Inference(object):
         self.model = BERTClassifier(self.bert_model, dr_rate=self.dropout_rt).to(self.device)
 
         self.model.load_state_dict(torch.load(self.save_path, map_location=self.device))
-        self.model.eval()
 
         self.tokenizer = get_tokenizer()
         self.token = gluonnlp.data.BERTSPTokenizer(self.tokenizer, self.vocab, lower=False)
@@ -67,6 +66,7 @@ class Inference(object):
 
     def initial_model(self):
         self.load_model()
+        self.model.eval()
 
 
 def get_result(result):
