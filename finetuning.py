@@ -32,6 +32,7 @@ class Solver(object):
         self.max_len = config.max_len
         self.dropout_rt = config.dropout_rate
         self.num_epochs = config.train_epochs
+        self.get_weights = config.get_weights
         self.learning_rate = 5e-5
         self.warmup_ratio = 0.1
         self.max_grad_norm = 1
@@ -52,6 +53,10 @@ class Solver(object):
     def load_model(self):
         self.bert_model, self.vocab = get_pytorch_kobert_model(ctx=self.device)
         self.model = BERTClassifier(self.bert_model, dr_rate=self.dropout_rt).to(self.device)
+        if self.get_weights:
+            print("get model from pretrained weigths")
+            self.model.load_state_dict(torch.load(self.model_save_path, map_location=self.device))
+
         self.tokenizer = get_tokenizer()
         self.token = gluonnlp.data.BERTSPTokenizer(self.tokenizer, self.vocab, lower=False)
 
@@ -155,8 +160,10 @@ if __name__ == '__main__':
     parser.add_argument('--train_epochs', default=100, type=int,
                         help="Epochs for training")
 
-    parser.add_argument('--save_path', default="save_model/best_model.pth", type=str,
+    parser.add_argument('--save_path', default="save_model/best_model_past.pth", type=str,
                         help="save path for best accuracy model")
+    parser.add_argument('--get_weights', default=False, type=bool,
+                        help="get pretrained weights from saved model")
 
     args = parser.parse_args()
     print(args)
