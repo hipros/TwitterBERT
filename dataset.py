@@ -2,7 +2,7 @@ import gluonnlp
 import numpy as np
 
 from torch.utils.data import Dataset
-from torch.utils.data import DataLoader
+import random
 
 
 class BERTDataset(Dataset):
@@ -14,6 +14,9 @@ class BERTDataset(Dataset):
         self.sentences = [transform([i[sent_idx]]) for i in dataset]
         self.labels = [np.int32(i[label_idx])for i in dataset]
 
+        concat = list(zip(self.sentences, self.labels))
+        random.shuffle(concat)
+        self.sentences, self.labels = zip(*concat)
 
     def __getitem__(self, ind):
         return (self.sentences[ind] + (self.labels[ind], ))
